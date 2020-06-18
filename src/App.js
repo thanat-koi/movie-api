@@ -8,23 +8,28 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {rows: []};
+    this.state = {rows: []}
   }
-  search = (keyword) => {
-    console.log(keyword);
+  componentDidMount() {
+    this.search('Harry');
+  }
+    
 
-    const dataArray = [];
-    const url ='https://api.themoviedb.org/3/search/movie?api_key=d293c0e815fe25592da220b5bd5828b1&query=' + keyword;
+  search = (s) => {
+    const url ='https://api.themoviedb.org/3/search/movie?api_key=d293c0e815fe25592da220b5bd5828b1&query=' + s;
+    const movieArray = [];
     
     Axios.get(url).then(result => {
       console.log(JSON.stringify(result.data.results));
+      //const results = result.data.results;
       result.data.results.forEach(item => {
-        item.poster = 'https://image.tmdb.org/t/p/w185' + item.poster 
-        dataArray.push(item);
+          item.poster = 'https://image.tmdb.org/t/p/w185' + item.poster_path
+          movieArray.push(item);
+
+      //const movie = <Movie movie={item} /> 
       })
 
-      this.setState({rows: dataArray});
-
+      this.setState({rows: movieArray});
     })
   }
 
